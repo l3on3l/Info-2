@@ -288,7 +288,6 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        print self.startingPosition
 
 
     def getStartState(self):
@@ -386,6 +385,10 @@ def cornersHeuristic(state, problem):
     # es conveniente visitar.
     unvisitedCorners = list(filter(lambda corner: corner not in visitedCorners, corners))
 
+    #no es necesario seguir buscando
+    if len(unvisitedCorners) == 0:
+        return 0
+
     totalHeuristic = 0
     while unvisitedCorners:
         #asumimos que la primera esquina no visitada es la mas optima
@@ -394,7 +397,7 @@ def cornersHeuristic(state, problem):
         #buscamos la sgte. esquina con mejor distancia hueristica a visitar a partir de la que estamos.
         for corner in unvisitedCorners:
             distance = util.manhattanDistance(currentPosition, corner)
-            if heuristicDistance < distance:
+            if heuristicDistance > distance:
                 heuristicDistance = distance
                 currentCorner = corner
         #marcamos/eliminamos la esquina que "visitamos" (lo que ya asumimos)
@@ -402,6 +405,7 @@ def cornersHeuristic(state, problem):
         currentPosition = currentCorner
         #sumamos nuestro costo total
         totalHeuristic += heuristicDistance
+
     return totalHeuristic
     # return 0 # Default to trivial solution
 
